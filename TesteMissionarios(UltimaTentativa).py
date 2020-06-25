@@ -7,7 +7,7 @@ class Estado():
         self.barco = barco
         self.jogos = None
 
-    def fim(self):
+    def fim(self):#Fim de jogo
         if self.canibalEsquerda == 0 and self.missionarioEsquerda == 0:
             return True
         return False
@@ -30,74 +30,73 @@ def novaJogada(jogadaAtual):#Criar uma nova jogada e ir adicionando na árvore;
         novoEstado = Estado(jogadaAtual.canibalEsquerda, jogadaAtual.missionarioEsquerda - 2, 'direita ', jogadaAtual.canibalDireita, jogadaAtual.missionarioDireita + 2)
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Dois missionarios da esquerda para a direita.")
+            print("2 missionários para a direita.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda - 2, jogadaAtual.missionarioEsquerda, 'direita ', jogadaAtual.canibalDireita + 2, jogadaAtual.missionarioDireita)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Dois canibais da esquerda para a direita.")
+            print("2 canibais para a direita.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda - 1, jogadaAtual.missionarioEsquerda - 1, 'direita ', jogadaAtual.canibalDireita + 1, jogadaAtual.missionarioDireita + 1)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um missionario e um canibal da esquerda para a direita.")
+            print("1 missionário e 1 canibal para a direita.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda, jogadaAtual.missionarioEsquerda - 1, 'direita ', jogadaAtual.canibalDireita, jogadaAtual.missionarioDireita + 1)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um missionario da esquerda para a direita.")
+            print("1 missionário para a direita.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda - 1, jogadaAtual.missionarioEsquerda, 'direita ', jogadaAtual.canibalDireita + 1, jogadaAtual.missionarioDireita)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um canibal da esquerda para a direita.")
+            print("1 canibal para a direita.")
             jogos.append(novoEstado)
     else:
         novoEstado = Estado(jogadaAtual.canibalEsquerda, jogadaAtual.missionarioEsquerda + 2, 'esquerda', jogadaAtual.canibalDireita, jogadaAtual.missionarioDireita - 2)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um canibal da direita  para a esquerda.")
+            print("1 canibal para a esquerda.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda + 2, jogadaAtual.missionarioEsquerda, 'esquerda', jogadaAtual.canibalDireita - 2, jogadaAtual.missionarioDireita)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Dois canibais da direita  para a esquerda.")
+            print("2 canibais para a esquerda.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda + 1, jogadaAtual.missionarioEsquerda + 1, 'esquerda', jogadaAtual.canibalDireita - 1, jogadaAtual.missionarioDireita - 1)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um missionario e um canibal da direita  para a esquerda.")
+            print("1 missionario e 1 canibal para a esquerda.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda, jogadaAtual.missionarioEsquerda + 1, 'esquerda', jogadaAtual.canibalDireita, jogadaAtual.missionarioDireita - 1)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um missionario da direita  para a esquerda.")
+            print("1 missionario para a esquerda.")
             jogos.append(novoEstado)
         novoEstado = Estado(jogadaAtual.canibalEsquerda + 1, jogadaAtual.missionarioEsquerda, 'esquerda', jogadaAtual.canibalDireita - 1, jogadaAtual.missionarioDireita)
 
         if novoEstado.estadoValido():
             novoEstado.jogos = jogadaAtual
-            print("Um canibal da direita  para a esquerda.")
+            print("1 canibal para a esquerda.")
             jogos.append(novoEstado)
 
     return jogos
 
 def buscaLargura(estado = Estado(3,3,'esquerda',0,0)):
-    estado.log = "Estado Inicial."
-    estado_inicial = estado
-    if estado_inicial.fim():
-        return estado_inicial
-    borda = list()
-    analisado = set()
-    borda.append(estado_inicial)
+    estadoInicio = estado
+    if estadoInicio.fim():
+        return estadoInicio
+    borda = list() # Cria uma lista vazia
+    analisado = set() #retorna um conjunto vazio para poder adicionar estados compativeis a jogada
+    borda.append(estadoInicio)
     while borda:
         estado = borda.pop(0)
         if estado.fim():
@@ -120,9 +119,10 @@ def melhorSolucao(solucao):
         jogos = jogos.jogos
     for t in range(len(caminho)):
         estado = caminho[len(caminho) - t - 1]
-        print("(C" + str(estado.canibalEsquerda) + ", M"+ str(estado.missionarioEsquerda) + " Esquerda|Direita C" + str(estado.canibalDireita) + ",M"+ str(estado.missionarioDireita) + ")" + " Lado Barco: " + estado.barco)
+        print("(C" + str(estado.canibalEsquerda) +",M"+ str(estado.missionarioEsquerda) + " Esquerda|Direita C" + str(estado.canibalDireita) + ",M" + str(estado.missionarioDireita) + ")" + " Lado Barco: "+ str(estado.barco))
 
-def principal():
+def main():
     solucao = buscaLargura()
     melhorSolucao(solucao)
-principal()
+
+main()
